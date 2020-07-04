@@ -10,7 +10,7 @@ class DeliverymanController {
       avatar_id: Yup.number(),
     });
 
-    if (!schema.isValid(req.body)) {
+    if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation error' });
     }
 
@@ -28,6 +28,8 @@ class DeliverymanController {
   }
 
   async index(req, res) {
+    const { page = 1 } = req.query;
+
     const deliverymans = await Deliveryman.findAll({
       attributes: ['id', 'name', 'email', 'avatar_id'],
       include: [
@@ -37,6 +39,8 @@ class DeliverymanController {
           attributes: ['name', 'path', 'url'],
         },
       ],
+      limit: 20,
+      offset: (page - 1) * 20,
     });
 
     return res.json(deliverymans);
@@ -49,7 +53,7 @@ class DeliverymanController {
       avatar_id: Yup.number(),
     });
 
-    if (!schema.isValid(req.body)) {
+    if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
