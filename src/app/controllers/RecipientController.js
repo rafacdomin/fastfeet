@@ -14,7 +14,7 @@ class RecipientController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ erorr: 'Validation fails' });
+      return res.status(400).json({ error: 'Validation fails' });
     }
 
     const { name, rua, numero, complemento, estado, cidade, cep } = req.body;

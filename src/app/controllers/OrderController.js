@@ -17,7 +17,7 @@ class OrderController {
     });
 
     if (!(await schema.isValid(req.body))) {
-      return res.status(400).json({ erorr: 'Validation fails' });
+      return res.status(400).json({ error: 'Validation fails' });
     }
 
     const { id, recipient_id, deliveryman_id, product } = await Order.create(
