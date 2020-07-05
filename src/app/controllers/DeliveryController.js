@@ -1,4 +1,6 @@
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
+import { startOfDay, endOfDay } from 'date-fns';
 import Deliveryman from '../models/Deliveryman';
 import Order from '../models/Order';
 import Recipient from '../models/Recipient';
@@ -83,6 +85,24 @@ class DeliveryController {
 
     if (order.deliveryman_id !== deliveryman.id) {
       return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const today = new Date();
+
+    if (req.body.start_date) {
+      const orders = await Order.findAll({
+        where: {
+          start_date: {
+            [Op.between]: [startOfDay(today), endOfDay(today)],
+          },
+        },
+      });
+
+      if (orders.length >= 5) {
+        return res
+          .status(401)
+          .json({ error: 'You can only do 5 deliveries per day' });
+      }
     }
 
     const {
