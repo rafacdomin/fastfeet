@@ -17,9 +17,19 @@ class RecipientController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
-    const { name, rua, numero, complemento, estado, cidade, cep } = req.body;
+    const {
+      id,
+      name,
+      rua,
+      numero,
+      complemento,
+      estado,
+      cidade,
+      cep,
+    } = await Recipient.create(req.body);
 
-    const recipient = await Recipient.create({
+    return res.json({
+      id,
       name,
       rua,
       numero,
@@ -28,8 +38,6 @@ class RecipientController {
       cidade,
       cep,
     });
-
-    return res.json(recipient);
   }
 
   async update(req, res) {

@@ -16,15 +16,15 @@ class DeliverymanController {
 
     const { name, email, avatar_id } = req.body;
 
-    let deliveryman = await Deliveryman.findOne({ where: { email } });
+    const deliveryman = await Deliveryman.findOne({ where: { email } });
 
     if (deliveryman) {
       return res.status(400).json({ error: 'Deliveryman already exists' });
     }
 
-    deliveryman = await Deliveryman.create({ name, email, avatar_id });
+    const { id } = await Deliveryman.create({ name, email, avatar_id });
 
-    return res.json({ name, email, avatar_id });
+    return res.json({ id, name, email, avatar_id });
   }
 
   async index(req, res) {
@@ -71,7 +71,7 @@ class DeliverymanController {
 
     const { name, email, avatar_id } = await deliveryman.update(req.body);
 
-    return res.json({ name, email, avatar_id });
+    return res.json({ id, name, email, avatar_id });
   }
 
   async delete(req, res) {
