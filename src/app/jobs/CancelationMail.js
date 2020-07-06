@@ -16,13 +16,15 @@ class CancelationMail {
       template: 'cancelation',
       context: {
         deliveryman: order.deliveryman.name,
-        retirada: format(
-          parseISO(order.start_date),
-          "'dia' dd 'de' MMMM', às' HH:mm'h",
-          {
-            locale: pt,
-          }
-        ),
+        retirada: order.start_date
+          ? format(
+              parseISO(order.start_date),
+              "'dia' dd 'de' MMMM', às' HH:mm'h",
+              {
+                locale: pt,
+              }
+            )
+          : null,
         product: order.product,
         name: order.recipient.name,
         rua: order.recipient.rua,
