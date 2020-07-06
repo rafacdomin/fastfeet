@@ -4,6 +4,9 @@ import Order from '../models/Order';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
 
+import CancelationMail from '../jobs/CancelationMail';
+import Queue from '../../lib/Queue';
+
 class DeliveryProblemsController {
   async store(req, res) {
     const schema = Yup.object().shape({
@@ -137,13 +140,28 @@ class DeliveryProblemsController {
       return res.status(400).json({ error: 'Problem not found' });
     }
 
-    const order = await Order.findByPk(delivery_id);
+    const order = await Order.findByPk(delivery_id, {
+      include: [
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['name', 'email'],
+        },
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['name', 'rua', 'numero', 'complemento', 'cidade', 'cep'],
+        },
+      ],
+    });
 
     if (!order) {
       return res.status(400).json({ error: 'Order not found' });
     }
 
     await order.update({ canceled_at: new Date() });
+
+    await Queue.add(CancelationMail.key, { order });
 
     return res.json(order);
   }

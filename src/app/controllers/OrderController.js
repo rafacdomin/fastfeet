@@ -1,8 +1,10 @@
 import * as Yup from 'yup';
+import Queue from '../../lib/Queue';
 import Order from '../models/Order';
 import File from '../models/File';
 import Recipient from '../models/Recipient';
 import Deliveryman from '../models/Deliveryman';
+import NewOrderMail from '../jobs/NewOrderMail';
 
 class OrderController {
   async store(req, res) {
@@ -20,9 +22,21 @@ class OrderController {
       return res.status(400).json({ error: 'Validation fails' });
     }
 
+    const deliveryman = await Deliveryman.findByPk(req.body.deliveryman_id);
+    if (!deliveryman) {
+      return res.status(400).json({ error: 'Deliveryman not found' });
+    }
+
+    const recipient = await Recipient.findByPk(req.body.recipient_id);
+    if (!recipient) {
+      return res.status(400).json({ error: 'Recipient not found' });
+    }
+
     const { id, recipient_id, deliveryman_id, product } = await Order.create(
       req.body
     );
+
+    await Queue.add(NewOrderMail.key, { deliveryman, recipient, product });
 
     return res.json({ id, recipient_id, deliveryman_id, product });
   }
