@@ -43,6 +43,12 @@ class DeliveryProblemsController {
       return res.status(401).json({ error: 'Id not provided' });
     }
 
+    const delivery = await Order.findByPk(delivery_id);
+
+    if (!delivery) {
+      return res.status(400).json({ error: 'Order not found' });
+    }
+
     const problems = await DeliveryProblems.findAll({
       where: { delivery_id },
       attributes: ['id', 'description'],
@@ -157,6 +163,10 @@ class DeliveryProblemsController {
 
     if (!order) {
       return res.status(400).json({ error: 'Order not found' });
+    }
+
+    if (order.canceled_at !== null) {
+      return res.status(400).json({ error: 'Order has already canceled' });
     }
 
     await order.update({ canceled_at: new Date() });
