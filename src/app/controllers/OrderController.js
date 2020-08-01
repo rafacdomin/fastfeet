@@ -1,3 +1,4 @@
+import { Op } from 'sequelize';
 import * as Yup from 'yup';
 import Queue from '../../lib/Queue';
 import Order from '../models/Order';
@@ -42,9 +43,10 @@ class OrderController {
   }
 
   async index(req, res) {
-    const { page = 1 } = req.query;
+    const { page = 1, name = '' } = req.query;
 
     const orders = await Order.findAll({
+      where: { product: { [Op.iLike]: `${name}%` } },
       attributes: [
         'id',
         'product',
