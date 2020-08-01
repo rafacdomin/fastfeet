@@ -56,10 +56,10 @@ Follow the steps below:
 
 ```bash
 # Clone this repository
-$ git clone https://github.com/rafacdomin/gobarber-server
+$ git clone https://github.com/rafacdomin/fastfeet-api
 
 # Go into the repository
-$ cd gobarber-server
+$ cd fastfeet-api
 
 # Install dependencies
 $ yarn
@@ -83,7 +83,7 @@ $ yarn dev
 
 ## License
 
-This project is under the MIT license. See the [LICENSE](https://github.com/rafacdomin/fastfeet-server/blob/master/LICENSE) for more information.
+This project is under the MIT license. See the [LICENSE](https://github.com/rafacdomin/fastfeet-api/blob/master/LICENSE) for more information.
 
 ---
 
