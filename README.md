@@ -1,7 +1,7 @@
 # FastFeet API Server :incoming_envelope:
 
 NodeJS API developed on [RocketSeat GoStack Bootcamp](https://rocketseat.com.br/bootcamp). Check the
-[Web Version](https://github.com/rafacdomin/fastfeet-web) and the [Mobile Version](https://github.com/rafacdomin/fastfeetgobarber-mobile) made with React Native.
+[Web Version](https://github.com/rafacdomin/fastfeet-web) and the [Mobile Version](https://github.com/rafacdomin/fastfeet-mobile) made with React Native.
 
 - [FastFeet API Server :incoming_envelope:](#fastfeet-api-server-incoming_envelope)
   - [About](#about)
